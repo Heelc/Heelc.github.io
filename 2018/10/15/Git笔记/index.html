@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.4.1" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.4.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.1" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.4.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Git？ Git是一个分布式版本管理系统，Git可以在任何时间点，把文档的状态作为更新记录保存起来。因此可以把编辑过的文档复原到以前的状态，也可以显示编辑前后的内容差异。而且，编辑旧文件后，试图覆盖较新的文件的时候（即上传文件到服务器时），系统会发出警告，因此可以避免在无意中覆盖了他人的编辑内容。  安装GitGit目前支持的系统有：linux、mac、Windows；  Windows到官网下载">
+<meta name="keywords" content="git,版本管理,分支,团队协作">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git笔记">
+<meta property="og:url" content="http://yoursite.com/2018/10/15/Git笔记/index.html">
+<meta property="og:site_name" content="Heelc&#39;blog">
+<meta property="og:description" content="Git？ Git是一个分布式版本管理系统，Git可以在任何时间点，把文档的状态作为更新记录保存起来。因此可以把编辑过的文档复原到以前的状态，也可以显示编辑前后的内容差异。而且，编辑旧文件后，试图覆盖较新的文件的时候（即上传文件到服务器时），系统会发出警告，因此可以避免在无意中覆盖了他人的编辑内容。  安装GitGit目前支持的系统有：linux、mac、Windows；  Windows到官网下载">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-10-15T12:32:14.917Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Git笔记">
+<meta name="twitter:description" content="Git？ Git是一个分布式版本管理系统，Git可以在任何时间点，把文档的状态作为更新记录保存起来。因此可以把编辑过的文档复原到以前的状态，也可以显示编辑前后的内容差异。而且，编辑旧文件后，试图覆盖较新的文件的时候（即上传文件到服务器时），系统会发出警告，因此可以避免在无意中覆盖了他人的编辑内容。  安装GitGit目前支持的系统有：linux、mac、Windows；  Windows到官网下载">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/10/15/Git笔记/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Git笔记 | Heelc'blog</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Heelc'blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-主页">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />主页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-关于">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-标签">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-分类">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-归档">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/15/Git笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Heelc">
+      <meta itemprop="description" content="有一个夜晚我烧毁了所有的记忆，从此我的梦就透明了。 有一个早晨我扔掉了所有的昨天，从此我的脚步就轻盈了 。">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Heelc'blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Git笔记
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-10-15 20:22:09 / Modified: 20:32:14" itemprop="dateCreated datePublished" datetime="2018-10-15T20:22:09+08:00">2018-10-15</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Git/" itemprop="url" rel="index"><span itemprop="name">Git</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Git/笔记/" itemprop="url" rel="index"><span itemprop="name">笔记</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Git？"><a href="#Git？" class="headerlink" title="Git？"></a>Git？</h2><blockquote>
+<p>Git是一个分布式版本管理系统，Git可以在任何时间点，把文档的状态作为更新记录保存起来。因此可以把编辑过的文档复原到以前的状态，也可以显示编辑前后的内容差异。<br>而且，编辑旧文件后，试图覆盖较新的文件的时候（即上传文件到服务器时），系统会发出警告，因此可以避免在无意中覆盖了他人的编辑内容。</p>
+</blockquote>
+<h2 id="安装Git"><a href="#安装Git" class="headerlink" title="安装Git"></a>安装Git</h2><p>Git目前支持的系统有：linux、mac、Windows；</p>
+<ol>
+<li>Windows到官网下载对应版本的Git</li>
+<li>安装完成后右键选项或者从开始菜单进入Git Bash，进行账号配置<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global user.name <span class="string">"Your Name"</span></span><br><span class="line">$ git config --global user.email <span class="string">"email@example.com"</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="创建本地版本库"><a href="#创建本地版本库" class="headerlink" title="创建本地版本库"></a>创建本地版本库</h2><p>在你想要管理的目录下启动Git Bash，键入命令<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git init</span><br></pre></td></tr></table></figure></p>
+<p>完成仓库创建，并且生成了<code>.git</code>目录，该目录便是用来跟踪记录管理版本库的，一般不能进行私自修改，容易破坏git仓库。<br><a id="more"></a></p>
+<h3 id="添加文件到版本库："><a href="#添加文件到版本库：" class="headerlink" title="添加文件到版本库："></a>添加文件到版本库：</h3><p>在版本库目录下创建README.md,然后添加到git版本库的管理中<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add README.md</span><br></pre></td></tr></table></figure></p>
+<p>然后提交到版本库中<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -m <span class="string">"worte a README.md file"</span></span><br></pre></td></tr></table></figure></p>
+<p><code>-m</code>参数是附加提交说明，比如：这次提交了什么内容、做了什么修改<br>可以多次add文件后一次性提交给版本库。</p>
+<h2 id="版本回退"><a href="#版本回退" class="headerlink" title="版本回退"></a>版本回退</h2><h3 id="查看当前仓库状态："><a href="#查看当前仓库状态：" class="headerlink" title="查看当前仓库状态："></a>查看当前仓库状态：</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git status</span><br></pre></td></tr></table></figure>
+<p>会告诉你那些文件被修改了，但是不涉及修改的具体内容，如果我们想查看修改了那些内容，就需要用到下面这个命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git diff</span><br></pre></td></tr></table></figure></p>
+<h3 id="查看版本日志"><a href="#查看版本日志" class="headerlink" title="查看版本日志"></a>查看版本日志</h3><p><code>$ git log</code></p>
+<h3 id="回退版本"><a href="#回退版本" class="headerlink" title="回退版本"></a>回退版本</h3><p>在Git中，当前版本为<code>HEAD</code>，上个版本为<code>HEAD^</code>,上上个版本为<code>HEAD^^</code>，过于久远的版本，比如往上的第10个版本，可以写为<code>HEAD~10</code>。<br>回退命令为<code>git reset --hard &lt;version&gt;</code>，比如回退到上个版本<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git reset --hard HEAD^</span><br></pre></td></tr></table></figure></p>
+<p>回退到上个版本后再使用<code>git log</code>最新版本的日志已经消失不见了，那么怎么才能再回到最新版本呢？只要你的git bash还保留着最新版本的版本号，就能直接通过<code>git reset --hard &lt;version&gt;</code>回到该版本。<br>如果重启了git bash 怎么办呢？在git中你总是有后悔的办法，<code>git reflog</code>会记录你的每一次命令，在过往命令中找到你想回到的版本号吧，然后，时光倒流。</p>
+<h3 id="暂存区"><a href="#暂存区" class="headerlink" title="暂存区"></a>暂存区</h3><p>通过<code>git add &lt;file&gt;</code>将你想进行版本管理的文件提交到暂存区，之后你对该文件的内容修改都会在暂存区中记录下来。当你觉得暂存区里的文件版本达到了预期的阶段，就可以通过<code>git commit -m &quot;msg&quot;</code>将暂存区里所有文件提交到版本库里的分支中，形成一个版本记录。当需要回滚版本的时候，就可以将分支中所保存的版本通过<code>git reset --hard &lt;version&gt;</code>回滚出来。</p>
+<h3 id="Git管理跟踪的是-lt-修改-gt"><a href="#Git管理跟踪的是-lt-修改-gt" class="headerlink" title="Git管理跟踪的是&lt;修改&gt;"></a>Git管理跟踪的是&lt;修改&gt;</h3><p>Git的特别之处是它管理和跟踪的是<strong>修改</strong>，每当你对文件进行修改后，都要将该次修改的文件add至暂存区中，否则在<code>commit</code>到分支的时候不会提交这次的最新修改版本。<br>撤销修改<code>$ git checkout -- readme.txt</code>,删除文件<code>git rm &lt;file&gt;</code></p>
+<h3 id="Github远程仓库"><a href="#Github远程仓库" class="headerlink" title="Github远程仓库"></a>Github远程仓库</h3><p>在Github上创建仓库并且和本地的仓库相关联</p>
+<ol>
+<li>设置账号到设备的SSH设置</li>
+<li><p>关联本地和远程的仓库</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git remote add origin git@github.com:username/repository.git</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将本地仓库内容推送到github远程仓库里</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git push -u origin master</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>把本地库的内容推送到远程，用<code>git push</code>命令，实际上是把当前分支<code>master</code>推送到远程。<code>-u</code>参数的作用：Git不但会把本地的master分支内容推送的远程新的master分支，还会把本地的master分支和远程的master分支关联起来，在以后的推送或者拉取时就可以简化命令。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure></p>
+<h4 id="从远程仓库克隆到本地："><a href="#从远程仓库克隆到本地：" class="headerlink" title="从远程仓库克隆到本地："></a>从远程仓库克隆到本地：</h4><p>已经有了一个远程仓库，我们需要把它克隆到本地。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> git@github.com:username/repository.git</span><br></pre></td></tr></table></figure></p>
+<h4 id="分支管理"><a href="#分支管理" class="headerlink" title="分支管理"></a>分支管理</h4><p>并行开发，在不影响主分支的情况下有独属于你的分支。<br>Git的分支创建其实是新建了一个分支的指针例如<code>b</code>来指向当前<code>master</code>分支，切换分支的时候就将<code>HEAD</code>指向<code>b</code>。当修改完文件提交给版本库的时候，会将<code>b</code>分支的指针指向该新版本，指向当前分支的<code>HEAD</code>指针也会随之指向<code>b</code>分支，从而形成一条分支版本线。<br>首先，先创建一个分支<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&amp; git checkout -b mybranch</span><br><span class="line">Switched to a new branch <span class="string">'mybranch'</span></span><br></pre></td></tr></table></figure></p>
+<p><code>git checkout</code>命令加上<code>-b</code>参数表示创建分支并切换到该分支，等价于以下两条命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git branch mybranch</span><br><span class="line">$ git checkout mybranch</span><br></pre></td></tr></table></figure></p>
+<p>然后用<code>git branch</code>命令查看当前分支：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git branch</span><br><span class="line">* mybranch</span><br><span class="line">  master</span><br></pre></td></tr></table></figure></p>
+<p><code>git branch</code>命令会列出所有分支，在当前分支前面显示一个<code>*</code>号</p>
+<h4 id="分支合并和删除分支"><a href="#分支合并和删除分支" class="headerlink" title="分支合并和删除分支"></a>分支合并和删除分支</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout master</span><br><span class="line">Switched to branch <span class="string">'master'</span></span><br><span class="line">$ git merge mybranch</span><br></pre></td></tr></table></figure>
+<p><code>git merge &lt;branch_name&gt;</code>命令用于将指定的分支合并到当前分支。所以，合并到主分支就得先切换到master分支<br><code>git checkout master</code>,再<code>git merge mybranch</code></p>
+<p>合并分支后就能放心删掉副分支了<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git branch -d mybranch</span><br></pre></td></tr></table></figure></p>
+<p>再查看<code>branch</code>,已经只剩下<code>master</code>分支了<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git branch</span><br><span class="line">* master</span><br></pre></td></tr></table></figure></p>
+<h4 id="合并分支，解决冲突"><a href="#合并分支，解决冲突" class="headerlink" title="合并分支，解决冲突"></a>合并分支，解决冲突</h4><p>当master分支和副分支都有了新的提交，在合并的时候可能会出现冲突。<br>这时需要查看master分支内容，并手动修改冲突部分，然后再合并，最后删除副分支。</p>
+<hr>
+<blockquote>
+<p>分支命令小结一下：</p>
+</blockquote>
+<ul>
+<li>查看分支：<code>git branch</code></li>
+<li>创建分支：<code>git branch &lt;name&gt;</code></li>
+<li>切换分支：<code>git checkout &lt;name&gt;</code></li>
+<li>创建+切换分支：<code>git checkout -b &lt;name&gt;</code></li>
+<li>合并某分支到当前分支：<code>git merge &lt;name&gt;</code></li>
+<li>删除分支：<code>git branch -d &lt;name&gt;</code></li>
+</ul>
+<hr>
+<h4 id="分支管理策略"><a href="#分支管理策略" class="headerlink" title="分支管理策略"></a>分支管理策略</h4><p>在通常合并分支的时候，如果可能Git会优先使用<code>Fast foward</code>模式来合并分支，在这种模式下合并后，删除了分支，便会丢失以前分支的信息。通过强制禁用<code>Fast  foward</code>模式，Git在<code>git meger</code>合并的时候就会生产一个新的<code>commit</code>，这样，从分支日志<code>git log</code>上就可以看到之前分支的信息。<br>例子：假设新创建了一个<code>dev</code>分支并已经修改文件。回到<code>master</code>分支准备进行合并.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout master</span><br><span class="line">Switched to branch <span class="string">'master'</span></span><br><span class="line">$ git merge -no-ff -m <span class="string">"merge with on-ff"</span> dev</span><br></pre></td></tr></table></figure></p>
+<p><code>-no-ff</code>参数表示禁用<code>Fast foward</code>模式，由于本次合并要提交一个新的<code>commit</code>所以加上<code>-m</code>参数附上提交描述。</p>
+<p>合并和可以用<code>git log</code>查看分支日志，可见分支都合并到了新增的<code>commit</code>上。</p>
+<p><strong>分支策略</strong>：实际开发中，<code>master</code>分支只用于发布版本，必须非常稳定，所以开发过程应该在附属分支上进行，当新功能开发完成后再合并到<code>master</code>分支上。所以在团队合作时，每个人都应该有独属于自己的分支，并行开发功能模块，互不影响。</p>
+<h4 id="分支场景"><a href="#分支场景" class="headerlink" title="分支场景"></a>分支场景</h4><p><strong>BUG 分支</strong>:<br>修复bug的任务在创建的临时分支BUG中进行，完成后合并到需要修复bug的分支上。<br>但是这时你如果正在开发一个新功能，进度还没完成，没法提交的时候怎么办？<br>使用Git提供的<code>stash</code>命令，将当前进度<strong>储藏</strong>起来，等以后恢复现场后继续工作。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git stash</span><br><span class="line">Saved working directory and index state WIP on dev: f61c233 add merge</span><br></pre></td></tr></table></figure></p>
+<p>现在用<code>git status</code>查看工作区，就是干净的。可以开始创建临时的BUG分支来修复bug了。<br>修复完bug，提交<code>commit</code>后，切换到需要修复bug的分支上合并临时BUG分支，然后删除BUG分支。<br>然后我们要回到之前的工作分支上了，刚才的工作现场存到<code>stash</code>里面去了，用<code>git stash list</code>查看<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git stash list</span><br><span class="line">stash@&#123;0&#125;: WIP on dev: f61c233 add merge</span><br></pre></td></tr></table></figure></p>
+<p>恢复工作现场的方法有两种：</p>
+<ol>
+<li><code>git stash apply &lt;stash@{?}&gt;</code>应用储藏，应用后，stash内容不会删除，如果需要删除，你需要使用命令<code>git stash drop &lt;stash@{?}&gt;</code></li>
+<li><code>git stash pop</code>，把stash区看做栈，pop出最新的stash，出栈后自动删除了最新的stash。</li>
+</ol>
+<p><strong>Feature 分支</strong>:<br>开发新功能时最好都创建一个临时的分支来进行开发，但是如果想要丢弃这个还没有被合并的分支，可以通过<br><code>git branch -D &lt;name&gt;</code>强行删除该分支。</p>
+<h3 id="多人协作"><a href="#多人协作" class="headerlink" title="多人协作"></a>多人协作</h3><p>当你从远程仓库克隆到本地的时候，Git已经将本地的<code>master</code>分支和远程的<code>master</code>分支关联起来了，同时远程的仓库默认名是<code>origin</code>，要查看远程仓库的详细信息，用<code>git remote -v</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git remote -v</span><br><span class="line">origin  git@github.com:Heelc/vscode.git (fetch)</span><br><span class="line">origin  git@github.com:Heelc/vscode.git (push)</span><br></pre></td></tr></table></figure></p>
+<p><code>fetch</code>拉取，<code>push</code>推送</p>
+<p><strong>推送分支</strong><br>推送分支，就是把该分支上的本地<code>commit</code>推送到远程库里。推送时，要指定要推送的本地分支，这样Git才会把该分支推送到远程库对应的分支上：比如，推送<code>master</code>分支<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure></p>
+<p>推送<code>dev</code>分支<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git push origin dev</span><br></pre></td></tr></table></figure></p>
+<p>假设新克隆了一个库到本地，是只有master分支的<br>如果要克隆远程的<code>dev</code>分支到本地：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout -b dev origin/dev</span><br></pre></td></tr></table></figure></p>
+<p>现在就能在<code>dev</code>分支上修改，并且能时不时地push到远程库。<br>多人提交遇到冲突，请先拉取远程最新的库到本地<code>git pull</code><br>如果失败，可能是没有指定本地的<code>dev</code>分支和远程<code>origin/dev</code>的连接：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git branch --<span class="built_in">set</span>-upstream-to=origin/dev</span><br><span class="line">Branch <span class="string">'dev'</span> <span class="built_in">set</span> up to track remote branch <span class="string">'dev'</span> from <span class="string">'origin'</span>.</span><br></pre></td></tr></table></figure></p>
+<p>之后就能<code>git pull</code>成功了。</p>
+<hr>
+<blockquote>
+<p>因此，多人协作的工作模式通常是这样：</p>
+</blockquote>
+<blockquote>
+<ol>
+<li>首先，可以试图用<code>git push origin &lt;branch-name&gt;</code>推送自己的修改；</li>
+<li>如果推送失败，则因为远程分支比你的本地更新，需要先用<code>git pull</code>试图合并；</li>
+<li>如果合并有冲突，则解决冲突，并在本地提交；</li>
+<li>没有冲突或者解决掉冲突后，再用<code>git push origin &lt;branch-name&gt;</code>推送就能成功！</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>如果<code>git pull</code>提示<code>no tracking information</code>，则说明本地分支和远程分支的链接关系没有创建，用命令<code>git branch --set-upstream-to &lt;branch-name&gt; origin/&lt;branch-name&gt;</code>。<br>这就是多人协作的工作模式，一旦熟悉了，就非常简单。</p>
+</blockquote>
+<p><strong>小结</strong></p>
+<blockquote>
+<ul>
+<li>查看远程库信息，使用<code>git remote -v</code>；</li>
+<li>本地新建的分支如果不推送到远程，对其他人就是不可见的；</li>
+<li>从本地推送分支，使用<code>git push origin &lt;branch-name&gt;</code>，如果推送失败，先用<code>git pull</code>抓取远程的新提交；</li>
+<li>在本地创建和远程分支对应的分支，使用<code>git checkout -b &lt;branch-name&gt; origin/&lt;branch-name&gt;</code>，本地和远程分支的名称最好一致；</li>
+<li>建立本地分支和远程分支的关联，使用<code>git branch --set-upstream &lt;branch-name&gt; origin/&lt;branch-name&gt;</code>；</li>
+<li>从远程抓取分支，使用<code>git pull</code>，如果有冲突，要先处理冲突。</li>
+</ul>
+</blockquote>
+<hr>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/git/" rel="tag"># git</a>
+          
+            <a href="/tags/版本管理/" rel="tag"># 版本管理</a>
+          
+            <a href="/tags/分支/" rel="tag"># 分支</a>
+          
+            <a href="/tags/团队协作/" rel="tag"># 团队协作</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/01/HTML学习笔记-表单/" rel="next" title="HTML学习笔记-表单">
+                <i class="fa fa-chevron-left"></i> HTML学习笔记-表单
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/10/15/CSS个人笔记/" rel="prev" title="CSS个人笔记">
+                CSS个人笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Heelc</p>
+              <p class="site-description motion-element" itemprop="description">有一个夜晚我烧毁了所有的记忆，从此我的梦就透明了。 有一个早晨我扔掉了所有的昨天，从此我的脚步就轻盈了 。</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">13</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Git？"><span class="nav-number">1.</span> <span class="nav-text">Git？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Git"><span class="nav-number">2.</span> <span class="nav-text">安装Git</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建本地版本库"><span class="nav-number">3.</span> <span class="nav-text">创建本地版本库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#添加文件到版本库："><span class="nav-number">3.1.</span> <span class="nav-text">添加文件到版本库：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#版本回退"><span class="nav-number">4.</span> <span class="nav-text">版本回退</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查看当前仓库状态："><span class="nav-number">4.1.</span> <span class="nav-text">查看当前仓库状态：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看版本日志"><span class="nav-number">4.2.</span> <span class="nav-text">查看版本日志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#回退版本"><span class="nav-number">4.3.</span> <span class="nav-text">回退版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#暂存区"><span class="nav-number">4.4.</span> <span class="nav-text">暂存区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git管理跟踪的是-lt-修改-gt"><span class="nav-number">4.5.</span> <span class="nav-text">Git管理跟踪的是&lt;修改&gt;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Github远程仓库"><span class="nav-number">4.6.</span> <span class="nav-text">Github远程仓库</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#从远程仓库克隆到本地："><span class="nav-number">4.6.1.</span> <span class="nav-text">从远程仓库克隆到本地：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分支管理"><span class="nav-number">4.6.2.</span> <span class="nav-text">分支管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分支合并和删除分支"><span class="nav-number">4.6.3.</span> <span class="nav-text">分支合并和删除分支</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#合并分支，解决冲突"><span class="nav-number">4.6.4.</span> <span class="nav-text">合并分支，解决冲突</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分支管理策略"><span class="nav-number">4.6.5.</span> <span class="nav-text">分支管理策略</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分支场景"><span class="nav-number">4.6.6.</span> <span class="nav-text">分支场景</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多人协作"><span class="nav-number">4.7.</span> <span class="nav-text">多人协作</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Heelc</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Mist</a> v6.4.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

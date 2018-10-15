@@ -121,7 +121,7 @@
 <meta property="og:image" content="http://yoursite.com/2018/10/01/hexo简明教程/git2-2.png">
 <meta property="og:image" content="http://yoursite.com/2018/10/01/hexo简明教程/git3-1.png">
 <meta property="og:image" content="http://yoursite.com/2018/10/01/hexo简明教程/git3-2.png">
-<meta property="og:updated_time" content="2018-10-08T11:59:12.000Z">
+<meta property="og:updated_time" content="2018-10-15T12:25:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="基于Hexo框架+github的轻量级博客环境搭建（简明教程）">
 <meta name="twitter:description" content="前几天在上载博文的时候发现以前搭建的hexo环境崩溃了，这学期下定决心要好好写东西来记录生活和学习，就重新再搭建了一次hexo框架的博客，由于下载的是最新版本的Git和node.js，所以必然有些新坑等着我去踩，现在坑已踩完，博客搭建成功，以下是详细的踩坑记录：   1.(软件准备)下载GIt和node.js最新版本-for_windows1.1Git1.2node.jsGit在官网下载不了的可">
@@ -370,7 +370,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2018-10-08 19:59:12" itemprop="dateModified" datetime="2018-10-08T19:59:12+08:00">2018-10-08</time>
+                <time title="Modified: 2018-10-15 20:25:36" itemprop="dateModified" datetime="2018-10-15T20:25:36+08:00">2018-10-15</time>
               
             
           </span>
@@ -440,11 +440,11 @@
 <p>勾选该选项，然后创建你的博客仓库吧</p>
 </blockquote>
 <h4 id="3-2添加ssh密匙"><a href="#3-2添加ssh密匙" class="headerlink" title="3.2添加ssh密匙"></a>3.2添加ssh密匙</h4><blockquote>
-<p>1.在桌面点击右键进入 <code>Git Bash here</code><br>设置用户名和邮箱<br>键入命令:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> git config --global user.name "Your userame" #输入自己的用户名</span><br><span class="line"><span class="meta">$</span> git config --global user.email "email@example.com" #注册的邮箱</span><br></pre></td></tr></table></figure></p>
+<p>1.在桌面点击右键进入 <code>Git Bash here</code><br>设置用户名和邮箱<br>键入命令:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git config --global user.name <span class="string">"Your userame"</span> <span class="comment">#输入自己的用户名</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git config --global user.email <span class="string">"email@example.com"</span> <span class="comment">#注册的邮箱</span></span></span><br></pre></td></tr></table></figure></p>
 </blockquote>
 <p><strong>2.创建ssh key</strong></p>
 <blockquote>
-<p>键入：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> ssh-keygen -t rsa -C "youremail@example.com" #注册的邮箱</span><br></pre></td></tr></table></figure></p>
+<p>键入：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ssh-keygen -t rsa -C <span class="string">"youremail@example.com"</span> <span class="comment">#注册的邮箱</span></span></span><br></pre></td></tr></table></figure></p>
 </blockquote>
 <blockquote>
 <p>直接回车默认，会让你输入连接密码，没看到密码字符请不要感到奇怪，一般命令行界面的密码输入都是不显示的，这是为了确保安全性。</p>
@@ -458,13 +458,13 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh -T git@github.com</span><br></pre></td></tr></table></figure>
 <p>如果出现反馈Hi XXXX You’ve successfully authenticated, but GitHub does not provide shell access.就表示你已经配置好了ssh</p>
 <h3 id="4-安装hexo，克隆主题并使用，配置-config-md"><a href="#4-安装hexo，克隆主题并使用，配置-config-md" class="headerlink" title="4.安装hexo，克隆主题并使用，配置_config.md"></a>4.安装hexo，克隆主题并使用，配置_config.md</h3><p>在任意地方右键进入Git bash 使用以下命令安装hexo</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> npm install hexo-cli -g</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> npm install hexo-cli -g</span></span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>最常用的hexo简写命令:</p>
 </blockquote>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> hexo n #生成文章，或者source\_posts手动编辑</span><br><span class="line"><span class="meta">$</span> hexo s #本地发布预览效果</span><br><span class="line"><span class="meta">$</span> hexo g #生成public静态文件</span><br><span class="line"><span class="meta">$</span> hexo d #自动部署到github</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> hexo n <span class="comment">#生成文章，或者source\_posts手动编辑</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> hexo s <span class="comment">#本地发布预览效果</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> hexo g <span class="comment">#生成public静态文件</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> hexo d <span class="comment">#自动部署到github</span></span></span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>然后在本地的磁盘上你喜欢的地方创建hexo博客文件夹，文件夹名建议不要使用中文，进入文件夹内，右键鼠标进入Git bash，执行命令如下：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> hexo init   #会自动在当前目录下生成搭建博客网站的所有文件</span><br><span class="line"><span class="meta">$</span> npm install #安装依赖包</span><br></pre></td></tr></table></figure></p>
+<p>然后在本地的磁盘上你喜欢的地方创建hexo博客文件夹，文件夹名建议不要使用中文，进入文件夹内，右键鼠标进入Git bash，执行命令如下：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> hexo init   <span class="comment">#会自动在当前目录下生成搭建博客网站的所有文件</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> npm install <span class="comment">#安装依赖包</span></span></span><br></pre></td></tr></table></figure></p>
 </blockquote>
 <p>现在可以在本地预览刚刚生成的博客界面了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ hexo g    #生成相关页面</span><br><span class="line">$ hexo s    #打开本地server</span><br></pre></td></tr></table></figure></p>
 <p>进入浏览器访问<code>http://localhost:4000/</code><br>不出意外的话就能看到初始的hexo博客界面了，默认主题是landscape。<br>关闭本地预览在Git bash中使用组合键<code>ctrl</code>+<code>c</code></p>
@@ -474,22 +474,22 @@
 <blockquote>
 <p>我想很少有人喜欢默认的主题吧，现在我们来克隆第三方的主题</p>
 </blockquote>
-<h3 id="在博客目录下进入Git-bash，键入命令"><a href="#在博客目录下进入Git-bash，键入命令" class="headerlink" title="在博客目录下进入Git bash，键入命令"></a>在博客目录下进入Git bash，键入命令</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> git clone https://github.com/wuchong/jacman.git themes/jacman</span><br></pre></td></tr></table></figure>
+<h3 id="在博客目录下进入Git-bash，键入命令"><a href="#在博客目录下进入Git-bash，键入命令" class="headerlink" title="在博客目录下进入Git bash，键入命令"></a>在博客目录下进入Git bash，键入命令</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git <span class="built_in">clone</span> https://github.com/wuchong/jacman.git themes/jacman</span></span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>修改hexo根目录下的_config.yml中的theme字段，将其设置为jacman。</p>
 </blockquote>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> cd themes/jacman</span><br><span class="line"><span class="meta">$</span> git pull origin master</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> themes/jacman</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git pull origin master</span></span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>接下来去修改主题的相关配置</p>
 </blockquote>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">menu:  #导航栏</span><br><span class="line">  主页: /</span><br><span class="line">  归档: /archives</span><br><span class="line">  关于: /about  #介绍一下你自己</span><br><span class="line">  网络工具: /tools  #自己添加</span><br><span class="line">  资源共享: /share  #自己添加</span><br><span class="line"></span><br><span class="line">widgets:  ## 右边的零部件，jacman主题提供了<span class="number">7</span>个：category、tag、rss、archive、tagcloud、links、weibo、douban，可以根据自己喜好增减</span><br><span class="line">- category  #目录</span><br><span class="line">- tagcloud  #标签云（也可以选用标签，上面显示数值）</span><br><span class="line">- links  #友情链接，需要自己添加，下一篇再说</span><br><span class="line">- rss  #RSS你们都知道的</span><br><span class="line">- weibo  #微博秀，需要在微博上开通，下一篇再说</span><br></pre></td></tr></table></figure>
 <p>然后在本地预览一下新主题吧</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> hexo g</span><br><span class="line"><span class="meta">$</span> hexo s</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> hexo g</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> hexo s</span></span><br></pre></td></tr></table></figure>
 <p>访问<code>http://localhost:4000/</code></p>
 <h3 id="5-部署到Github的项目仓库上"><a href="#5-部署到Github的项目仓库上" class="headerlink" title="5.部署到Github的项目仓库上"></a>5.部署到Github的项目仓库上</h3><blockquote>
 <p>在站点配置文件里修改好deploy字段后，就能部署静态页面到github上了</p>
 </blockquote>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> hexo g</span><br><span class="line"><span class="meta">$</span> hexo d #然后会让你输入ssh许可的密码，许可成功后就开始会自动部署了。</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> hexo g</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> hexo d <span class="comment">#然后会让你输入ssh许可的密码，许可成功后就开始会自动部署了。</span></span></span><br></pre></td></tr></table></figure>
 <p>视网络情况而定，大概一两分钟就能在浏览器上访问自己的博客了哦。</p>
 <blockquote>
 <p>地址格式：<code>username.gihub.io</code></p>
@@ -498,10 +498,10 @@
 <p>发表文章步骤如下（简单快捷哦）<br>1.在Git Bash执行命令：$ hexo new “my new post”<br>2.在hexo根目录下\source_post中打开my-new-post.md，打开方式使用记事本或notepad++。</p>
 </blockquote>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">title: my <span class="keyword">new</span> post #可以改成中文的，如“新文章”</span><br><span class="line">date: <span class="number">2015</span><span class="number">-04</span><span class="number">-08</span> <span class="number">22</span>:<span class="number">56</span>:<span class="number">29</span> #发表日期，一般不改动</span><br><span class="line">categories: blog #文章文类</span><br><span class="line">tags: [博客，文章] #文章标签，多于一项时用这种格式，只有一项时使用tags: blog</span><br><span class="line">---</span><br><span class="line">#这里是正文，用markdown写，你可以选择写一段显示在首页的简介后，加上</span><br><span class="line">&lt;!--more--&gt;，在&lt;!--more--&gt;之前的内容会显示在首页，之后的内容会被隐藏，当游客点击Read more才能看到。</span><br></pre></td></tr></table></figure>
-<h3 id="写好后想在本地预览效果的话步骤如上："><a href="#写好后想在本地预览效果的话步骤如上：" class="headerlink" title="写好后想在本地预览效果的话步骤如上："></a>写好后想在本地预览效果的话步骤如上：</h3><p>注意一般默认在hexo目录下进入Git bash<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> hexo g</span><br><span class="line"><span class="meta">$</span> hexo s</span><br></pre></td></tr></table></figure></p>
+<h3 id="写好后想在本地预览效果的话步骤如上："><a href="#写好后想在本地预览效果的话步骤如上：" class="headerlink" title="写好后想在本地预览效果的话步骤如上："></a>写好后想在本地预览效果的话步骤如上：</h3><p>注意一般默认在hexo目录下进入Git bash<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> hexo g</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> hexo s</span></span><br></pre></td></tr></table></figure></p>
 <p>访问<code>http://localhost:4000/</code></p>
 <p>感觉ok后就能部署到github了</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> hexo g</span><br><span class="line"><span class="meta">$</span> hexo d</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> hexo g</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> hexo d</span></span><br></pre></td></tr></table></figure>
 <h3 id="7-hexo你的博客"><a href="#7-hexo你的博客" class="headerlink" title="7.hexo你的博客"></a>7.hexo你的博客</h3><p>关于为什么要写博客，我想可以看看阮一峰先生的一篇博文</p>
 <blockquote>
 <p>为什么要写Blog？<br>作者： 阮一峰<br>日期： 2006年12月22日<br>到今年12月为止，我写Blog已经满3年了，一共写了接近600篇，平均每2天写一篇。今后应该还会继续写下去。<br>3年前，我开始写的时候，并没有想过自己会坚持这么久。3年中，也遇见过几次有人问我”为什么要写Blog？”<br>是啊，为什么要写Blog？毕竟这里没有人支付稿酬，也看不出有任何明显的物质性收益。<br>Darren Rowse在他的Blog上，讲到了7个理由，我觉得说得很好。<br><strong>1. 学会写作Blog的技巧（teach you the skills of blogging）</strong><br>没有人天生会写Blog，我刚开始的时候也不知道该怎么写。但是，经过不断的尝试，现在我知道怎么可以写出受欢迎的文章。<br><strong>2. 熟悉Blog工具（familiarize you with the tools of blogging）</strong><br>写作Blog，可以选择自己搭建平台，也可以选择网上的免费Blog提供商。我曾经试用过不少Blog软件，最后才选择了现在的Moveable Type，这本身也是一个学习过程。<br><strong>3. 便于更好地安排时间（help you work out how much time you have）</strong><br>写作Blog花费的时间，要比大家想象的多，甚至也比我自己想象的多。但是，另一方面，每天我们又有很多时间被无谓地浪费了。坚持写作Blog的过程，也是进行更好的时间安排的过程。<br><strong>4. 便于你了解自己是否可以长期做一件喜欢的事情（help you work out if you can sustain blogging for the long term）</strong><br>很多人都有自己的爱好，但是只有当你享受到这种爱好时，你才会长期坚持下去。写作Blog可以帮助你体验到这种感觉。<br><strong>5. 便于体验Blog文化（give you a taste of blogging ‘culture’）</strong><br>Blog的世界有一种无形的礼仪、风格和用语。熟悉它们，会使你更好地表达自己和理解他人。<br><strong>6. 便于你形成和了解自我（help you define a niche）</strong><br>长期写作Blog最大的好处之一就是，写着写着，你的自我会变得越来越清晰。你最终会明白自己是一个什么样的人，以及自己热爱的又是什么东西。<br><strong>7. 帮助你找到读者（help you find a readership）</strong><br>与他人交流是生命最大的乐趣之一。写作Blog可以帮助我们更好地做到这一点。<br>如果你觉得你想说的东西不适宜让他人知道，你可以在自己的电脑里写，不用放到网上。这样除了上面第7点以外，其他6点的好处也还是适用的。<br>总之，正是因为以上7个理由，所以我强烈建议，每一个朋友都应该有一个自己的Blog，尝试将自己的生活和想法记录下来，留下一些印记。</p>
@@ -622,7 +622,7 @@
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-count">4</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -639,7 +639,27 @@
                     
                       
                     
-                    <span class="site-state-item-count">2</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">7</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -664,7 +684,25 @@
                     
                       
                     
-                    <span class="site-state-item-count">6</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">13</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
