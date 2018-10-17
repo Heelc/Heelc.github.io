@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.4.1" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.4.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.1" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.4.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="日志通过django设置文件中的LOGGING设置来实现日志的存储（MongoDB）和处理（分级处理）  明确系统需求：1.获取django系统日志（WARNING级及以上的日志信息）2.存储至MongoDB3.将CRITICAL级别的日志信息发送到PD邮箱 django的内置解决方案：使用python自带的logging模块通过在django项目的setting.py文件中配置LOGGING设置">
+<meta name="keywords" content="django,Web,Python,logging,MongoDB">
+<meta property="og:type" content="article">
+<meta property="og:title" content="实现django项目日志系统(MongoDB)">
+<meta property="og:url" content="http://yoursite.com/2018/10/17/实现django项目日志系统-MongoDB/index.html">
+<meta property="og:site_name" content="Heelc&#39;blog">
+<meta property="og:description" content="日志通过django设置文件中的LOGGING设置来实现日志的存储（MongoDB）和处理（分级处理）  明确系统需求：1.获取django系统日志（WARNING级及以上的日志信息）2.存储至MongoDB3.将CRITICAL级别的日志信息发送到PD邮箱 django的内置解决方案：使用python自带的logging模块通过在django项目的setting.py文件中配置LOGGING设置">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2018/10/17/实现django项目日志系统-MongoDB/log1.png">
+<meta property="og:image" content="http://yoursite.com/2018/10/17/实现django项目日志系统-MongoDB/log2.png">
+<meta property="og:updated_time" content="2018-10-17T13:02:10.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="实现django项目日志系统(MongoDB)">
+<meta name="twitter:description" content="日志通过django设置文件中的LOGGING设置来实现日志的存储（MongoDB）和处理（分级处理）  明确系统需求：1.获取django系统日志（WARNING级及以上的日志信息）2.存储至MongoDB3.将CRITICAL级别的日志信息发送到PD邮箱 django的内置解决方案：使用python自带的logging模块通过在django项目的setting.py文件中配置LOGGING设置">
+<meta name="twitter:image" content="http://yoursite.com/2018/10/17/实现django项目日志系统-MongoDB/log1.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/10/17/实现django项目日志系统-MongoDB/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>实现django项目日志系统(MongoDB) | Heelc'blog</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Heelc'blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-主页">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />主页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-关于">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-标签">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-分类">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-归档">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/17/实现django项目日志系统-MongoDB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Heelc">
+      <meta itemprop="description" content="有一个夜晚我烧毁了所有的记忆，从此我的梦就透明了。 有一个早晨我扔掉了所有的昨天，从此我的脚步就轻盈了 。">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Heelc'blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">实现django项目日志系统(MongoDB)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-10-17 19:42:34 / Modified: 21:02:10" itemprop="dateCreated datePublished" datetime="2018-10-17T19:42:34+08:00">2018-10-17</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/django/" itemprop="url" rel="index"><span itemprop="name">django</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h2><p>通过<code>django</code>设置文件中的LOGGING设置来实现日志的存储（MongoDB）和处理（分级处理）</p>
+<hr>
+<h3 id="明确系统需求："><a href="#明确系统需求：" class="headerlink" title="明确系统需求："></a>明确系统需求：</h3><p>1.获取<strong>django</strong>系统日志（<strong>WARNING</strong>级及以上的日志信息）<br>2.存储至<strong>MongoDB</strong><br>3.将<strong>CRITICAL</strong>级别的日志信息发送到<strong>PD</strong>邮箱</p>
+<h3 id="django的内置解决方案："><a href="#django的内置解决方案：" class="headerlink" title="django的内置解决方案："></a>django的内置解决方案：</h3><p>使用<code>python</code>自带的<code>logging</code>模块<br>通过在<strong>django</strong>项目的<code>setting.py</code>文件中配置<strong>LOGGING</strong>设置来定制<code>logging</code>模块的日志输出和捕获.</p>
+<h4 id="logging模块的四大组件"><a href="#logging模块的四大组件" class="headerlink" title="logging模块的四大组件"></a>logging模块的四大组件</h4><a id="more"></a>
+<table>
+<thead>
+<tr>
+<th>组件</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>loggers</td>
+<td>提供应用程序代码直接使用的接口</td>
+</tr>
+<tr>
+<td>handlers</td>
+<td>用于将日志记录发送到指定的目的位置</td>
+</tr>
+<tr>
+<td>filters</td>
+<td>提供更颗粒度的日志过滤功能，用于决定哪些日志记录将会被输出（其他的日志记录将会被忽略）</td>
+</tr>
+<tr>
+<td>formatters</td>
+<td>用于控制日志信息的最终输出格式</td>
+</tr>
+</tbody>
+</table>
+<p><strong>日志系统流图</strong><br><img src="/2018/10/17/实现django项目日志系统-MongoDB/log1.png" title="创建仓库"><br><strong>该项目日志系统流图</strong><br><img src="/2018/10/17/实现django项目日志系统-MongoDB/log2.png" title="创建仓库"></p>
+<p><strong>MongoDB</strong>  Log collection设计<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">class Log(Document):</span><br><span class="line">    '''</span><br><span class="line">    日志</span><br><span class="line">    '''</span><br><span class="line">    logTime = DateTimeField()</span><br><span class="line">    log = StringField()</span><br></pre></td></tr></table></figure></p>
+<p>需求实现思路：<br>由于django内置的Handler消息类无法满足我们的日志系统需求，所以需要定制Handler子类来实现需求。<br>需要派生以下子类：</p>
+<ol>
+<li>派生MongoDBHandler类继承于logging.Handler类，实现需求：将日志记录存储在MongoDB中。</li>
+<li>派生LogPdEmailHandler类继承于django.utils.log.AdminEmailHandler类，实现需求：将CRITICAL日志记录发送到pd邮箱中。</li>
+</ol>
+<p>有了定制功能的子类后，去django的settings.py文件下设置启用LOGGING模块：<br>注册handlers: mail_Pd,mongodb。 并在logger：django中启用这两个handler。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#日志配置</span></span><br><span class="line">LOGGING = &#123;</span><br><span class="line">    <span class="string">'version'</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="string">'disable_existing_loggers'</span>: <span class="keyword">False</span>,</span><br><span class="line">    <span class="comment"># 'filters': &#123;</span></span><br><span class="line">    <span class="comment">#     # 'special': &#123;</span></span><br><span class="line">    <span class="comment">#     #     '()': 'project.logging.SpecialFilter',</span></span><br><span class="line">    <span class="comment">#     #     'foo': 'bar',</span></span><br><span class="line">    <span class="comment">#     # &#125;,</span></span><br><span class="line">    <span class="comment">#     'require_debug_true': &#123;</span></span><br><span class="line">    <span class="comment">#         '()': 'django.utils.log.RequireDebugTrue',</span></span><br><span class="line">    <span class="comment">#     &#125;,</span></span><br><span class="line">    <span class="comment"># &#125;,</span></span><br><span class="line">    <span class="string">'handlers'</span>: &#123;</span><br><span class="line">        <span class="string">'console'</span>: &#123;</span><br><span class="line">            <span class="string">'level'</span>: <span class="string">'DEBUG'</span>,</span><br><span class="line">            <span class="comment"># 'filters': ['require_debug_true'],</span></span><br><span class="line">            <span class="string">'class'</span>: <span class="string">'logging.StreamHandler'</span>,</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="string">'mail_Pd'</span>: &#123;</span><br><span class="line">            <span class="string">'level'</span>: <span class="string">'CRITICAL'</span>,</span><br><span class="line">            <span class="string">'class'</span>: <span class="string">'persona.common.MongoDBLogUtil.LogPdEmailHandler'</span>,</span><br><span class="line">            <span class="string">'include_html'</span>: <span class="keyword">True</span>,</span><br><span class="line">            <span class="comment"># 'filters': ['special']</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="string">'mongodb'</span>: &#123;</span><br><span class="line">            <span class="string">'level'</span>: <span class="string">'WARNING'</span>,</span><br><span class="line">            <span class="string">'class'</span>: <span class="string">'persona.common.MongoDBLogUtil.MongoDBHandler'</span>,</span><br><span class="line">            <span class="string">'mongdbname'</span>: DBNAME,</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="comment"># 'file': &#123;</span></span><br><span class="line">        <span class="comment">#     'level': 'INFO',</span></span><br><span class="line">        <span class="comment">#     'class': 'logging.FileHandler',</span></span><br><span class="line">        <span class="comment">#     'filename': 'persona/test_logs/file_log.log',</span></span><br><span class="line">        <span class="comment">#     'formatter': 'verbose'</span></span><br><span class="line">        <span class="comment"># &#125;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">'loggers'</span>: &#123;</span><br><span class="line">        <span class="string">'django'</span>: &#123;</span><br><span class="line">            <span class="string">'handlers'</span>: [<span class="string">'mongodb'</span>, <span class="string">'mail_Pd'</span>],</span><br><span class="line">            <span class="string">'level'</span>: <span class="string">'WARNING'</span>,</span><br><span class="line">            <span class="string">'propagate'</span>: <span class="keyword">True</span>,</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="comment"># 'django.server': &#123;</span></span><br><span class="line">        <span class="comment">#     'handlers': ['console','file'],</span></span><br><span class="line">        <span class="comment">#     'level': 'DEBUG',</span></span><br><span class="line">        <span class="comment">#     'propagate': False,</span></span><br><span class="line">        <span class="comment"># &#125;,</span></span><br><span class="line">        <span class="comment"># 'django.request': &#123;</span></span><br><span class="line">        <span class="comment">#     'handlers': ['mail_admins','file'],</span></span><br><span class="line">        <span class="comment">#     'level': 'ERROR',</span></span><br><span class="line">        <span class="comment">#     'propagate': False,</span></span><br><span class="line">        <span class="comment"># &#125;,</span></span><br><span class="line">    &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>派生类实现部分代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> logging <span class="keyword">import</span> Handler</span><br><span class="line"><span class="keyword">from</span> persona.common.models <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> mongoengine <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">from</span> bson.timestamp <span class="keyword">import</span> Timestamp</span><br><span class="line"><span class="keyword">from</span> django.conf <span class="keyword">import</span> settings</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MongoDBHandler</span><span class="params">(Handler)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, mongdbname)</span>:</span></span><br><span class="line">        Handler.__init__(self)</span><br><span class="line">        self.DBNAME = mongdbname</span><br><span class="line">        self.connection = <span class="keyword">None</span></span><br><span class="line">        self._connect()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_connect</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            self.connection = connect(DBNAME)</span><br><span class="line">        <span class="keyword">except</span> MongoEngineConnectionError:</span><br><span class="line">            <span class="keyword">raise</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">emit</span><span class="params">(self, record)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> self.connection <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                log_record = self.format(record)</span><br><span class="line">                <span class="comment"># log_record = format(record)</span></span><br><span class="line">                logTime = datetime.now()</span><br><span class="line">                log = Log(logTime = logTime, log = log_record)</span><br><span class="line">                log.save()</span><br><span class="line">            <span class="keyword">except</span> Exception:</span><br><span class="line">                self.handleError(record)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.utils.log <span class="keyword">import</span> AdminEmailHandler</span><br><span class="line"><span class="keyword">from</span> django.core.mail <span class="keyword">import</span> send_mail</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LogPdEmailHandler</span><span class="params">(AdminEmailHandler)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, include_html=False, email_backend=None)</span>:</span></span><br><span class="line">        super().__init__(include_html=<span class="keyword">False</span>, email_backend=<span class="keyword">None</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">send_mail</span><span class="params">(self, subject, message, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="comment"># subject = "CRITICAL_Log"</span></span><br><span class="line">        <span class="comment"># pd@withfield.tech</span></span><br><span class="line">        send_mail(subject, message, settings.EMAIL_HOST_USER,</span><br><span class="line">                  [<span class="string">"support@withfield.tech"</span>], connection=self.connection())</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/django/" rel="tag"># django</a>
+          
+            <a href="/tags/Web/" rel="tag"># Web</a>
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+            <a href="/tags/logging/" rel="tag"># logging</a>
+          
+            <a href="/tags/MongoDB/" rel="tag"># MongoDB</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/15/CSS个人笔记/" rel="next" title="CSS个人笔记">
+                <i class="fa fa-chevron-left"></i> CSS个人笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Heelc</p>
+              <p class="site-description motion-element" itemprop="description">有一个夜晚我烧毁了所有的记忆，从此我的梦就透明了。 有一个早晨我扔掉了所有的昨天，从此我的脚步就轻盈了 。</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#日志"><span class="nav-number">1.</span> <span class="nav-text">日志</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#明确系统需求："><span class="nav-number">1.1.</span> <span class="nav-text">明确系统需求：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#django的内置解决方案："><span class="nav-number">1.2.</span> <span class="nav-text">django的内置解决方案：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#logging模块的四大组件"><span class="nav-number">1.2.1.</span> <span class="nav-text">logging模块的四大组件</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Heelc</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Mist</a> v6.4.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -304,6 +304,172 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/17/实现django项目日志系统-MongoDB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Heelc">
+      <meta itemprop="description" content="有一个夜晚我烧毁了所有的记忆，从此我的梦就透明了。 有一个早晨我扔掉了所有的昨天，从此我的脚步就轻盈了 。">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Heelc'blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/17/实现django项目日志系统-MongoDB/" itemprop="url">
+                  实现django项目日志系统(MongoDB)
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-10-17 19:42:34 / Modified: 21:02:10" itemprop="dateCreated datePublished" datetime="2018-10-17T19:42:34+08:00">2018-10-17</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/django/" itemprop="url" rel="index"><span itemprop="name">django</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h2><p>通过<code>django</code>设置文件中的LOGGING设置来实现日志的存储（MongoDB）和处理（分级处理）</p>
+<hr>
+<h3 id="明确系统需求："><a href="#明确系统需求：" class="headerlink" title="明确系统需求："></a>明确系统需求：</h3><p>1.获取<strong>django</strong>系统日志（<strong>WARNING</strong>级及以上的日志信息）<br>2.存储至<strong>MongoDB</strong><br>3.将<strong>CRITICAL</strong>级别的日志信息发送到<strong>PD</strong>邮箱</p>
+<h3 id="django的内置解决方案："><a href="#django的内置解决方案：" class="headerlink" title="django的内置解决方案："></a>django的内置解决方案：</h3><p>使用<code>python</code>自带的<code>logging</code>模块<br>通过在<strong>django</strong>项目的<code>setting.py</code>文件中配置<strong>LOGGING</strong>设置来定制<code>logging</code>模块的日志输出和捕获.</p>
+<h4 id="logging模块的四大组件"><a href="#logging模块的四大组件" class="headerlink" title="logging模块的四大组件"></a>logging模块的四大组件</h4>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/10/17/实现django项目日志系统-MongoDB/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/15/CSS个人笔记/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -916,7 +1082,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2018-10-15 20:44:58" itemprop="dateModified" datetime="2018-10-15T20:44:58+08:00">2018-10-15</time>
+                <time title="Modified: 2018-10-15 20:45:43" itemprop="dateModified" datetime="2018-10-15T20:45:43+08:00">2018-10-15</time>
               
             
           </span>
@@ -1059,7 +1225,7 @@
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-count">5</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -1086,7 +1252,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">7</span>
+                      
+                    
+                    <span class="site-state-item-count">8</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -1125,7 +1293,17 @@
                     
                       
                     
-                    <span class="site-state-item-count">13</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">18</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
